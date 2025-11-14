@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riwayat Pembelian Tiket</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff8f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      text-align: center;
+      color: #ff6600;
+      margin-top: 30px;
+    }
+
+    /* TABEL */
+    .riwayat-table {
+      margin: 30px auto;
+      width: 90%;
+      border-collapse: collapse;
+      border: 1px solid #ddd;
+      font-size: 15px;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .riwayat-table th, .riwayat-table td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    .riwayat-table th {
+      background-color: #ff6600;
+      color: white;
+      font-weight: 600;
+    }
+    .riwayat-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    /* TOMBOL DALAM TABEL */
+    .riwayat-table .btn {
+      display: inline-block;
+      width: 90px;
+      padding: 7px 0;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-lihat {
+      background-color: #ff6600;
+    }
+
+    .btn-hapus {
+      background-color: #b71c1c;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    .btn-kembali {
+      display: block;
+      margin: 20px auto;
+      width: 180px;
+      background: #555;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #halamanTiket {
+      text-align: center;
+      display: none;
+      margin-top: 30px;
+    }
+
+    canvas {
+      margin-top: 15px;
+    }
+
+    #infoTiket {
+      margin-top: 15px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Riwayat Pembelian Tiket</h2>
+
+  <table id="riwayatTable" class="riwayat-table">
+    <thead>
+      <tr>
+        <th>No. Tiket</th>
+        <th>Nama</th>
+        <th>Pertandingan</th>
+        <th>Tanggal</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="riwayatBody">
+      <tr><td colspan="5">Memuat data...</td></tr>
+    </tbody>
+  </table>
+
+  <button class="btn-kembali" onclick="window.location.href='pemesanan.html'">Kembali ke Pemesanan</button>
+
+  <!-- Halaman Tiket Fisik -->
+  <section id="halamanTiket">
+    <h2>Detail Tiket Anda</h2>
+    <canvas id="barcodeCanvas"></canvas>
+    <p id="infoTiket"></p>
+    <button class="btn-lihat" onclick="cetakTiket()">Cetak / Unduh Tiket</button>
+    <button class="btn-kembali" onclick="tutupTiket()">Kembali</button>
+  </section>
+
+  <script>
+    const halamanTiket = document.getElementById('halamanTiket');
+    const infoTiket = document.getElementById('infoTiket');
+
+    function loadRiwayat() {
+      let riwayat = JSON.parse(localStorage.getItem('riwayatTiket'));
+
+      const tbody = document.getElementById('riwayatBody');
+      tbody.innerHTML = '';
+
+      if (!riwayat || riwayat.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5">Belum ada data pembelian tiket.</td></tr>';
+        return;
+      }
+
+      riwayat.forEach((item, i) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.nomor}</td>
+          <td>${item.nama}</td>
+          <td>${item.pertandingan}</td>
+          <td>${item.tanggal}</td>
+          <td>
+            <button class="btn btn-lihat" onclick="lihatTiket('${item.nomor}','${item.nama}','${item.pertandingan}','${item.tanggal}')">Lihat</button>
+            <button class="btn btn-hapus" onclick="hapusRiwayat(${i})">Hapus</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function lihatTiket(nomor, nama, pertandingan, tanggal) {
+      document.querySelector('table').style.display = 'none';
+      document.querySelector('.btn-kembali').style.display = 'none';
+      halamanTiket.style.display = 'block';
+
+      infoTiket.innerHTML = `
+        <strong>Nama:</strong> ${nama}<br>
+        <strong>Pertandingan:</strong> ${pertandingan}<br>
+        <strong>Tanggal:</strong> ${tanggal}<br>
+        <strong>Nomor Tiket:</strong> ${nomor}
+      `;
+
+      JsBarcode("#barcodeCanvas", nomor, {
+        format: "CODE128",
+        lineColor: "#d32f2f",
+        width: 2,
+        height: 60,
+        fontSize: 14,
+        displayValue: true
+      });
+    }
+
+    function tutupTiket() {
+      halamanTiket.style.display = 'none';
+      document.querySelector('table').style.display = 'table';
+      document.querySelector('.btn-kembali').style.display = 'block';
+    }
+
+    function cetakTiket() {
+      window.print();
+    }
+
+    function hapusRiwayat(index) {
+      let riwayat = JSON.parse(localStorage.getItem('riwayatTiket')) || [];
+      if (confirm('Yakin ingin menghapus tiket ini?')) {
+        riwayat.splice(index, 1);
+        localStorage.setItem('riwayatTiket', JSON.stringify(riwayat));
+        loadRiwayat();
+      }
+    }
+
+    window.onload = loadRiwayat;
+  </script>
+
+</body>
+</html>

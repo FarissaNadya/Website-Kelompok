@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemesanan Tiket Pertandingan</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <style>
+    /* ====== LATAR BELAKANG ====== */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('cuma sayang_.jpeg') no-repeat center center/cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Efek spotlight belakang form */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.25), rgba(0,0,0,0.7));
+      z-index: 0;
+    }
+
+    /* ====== FORM PEMESANAN ====== */
+    .form-section {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 15px;
+      padding: 35px 40px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      color: #fff;
+    }
+
+    h2 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.9);
+      color: #000;
+      font-size: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      background-color: #d32f2f;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: #b71c1c;
+      transform: scale(1.03);
+    }
+
+    #errorMessage {
+      margin-top: 10px;
+      color: #ffcccc;
+    }
+
+    /* ====== KONFIRMASI PEMBAYARAN ====== */
+    #halamanKonfirmasi {
+      display: none;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 15px;
+      padding: 25px 35px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+
+    #opsiBayar {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    #btnBelumBayar {
+      background-color: gray;
+    }
+
+    #statusPesan {
+      color: #ffdddd;
+      font-weight: bold;
+      text-align: center;
+      display: none;
+    }
+
+    /* ====== HALAMAN TIKET ====== */
+    #halamanTiket {
+      display: none;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 30px 35px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+
+    #logoTiket {
+      width: 200px;
+      margin: 10px auto 20px;
+      display: block;
+    }
+
+    #barcodeCanvas {
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px 20px;
+      margin: 15px auto;
+      display: block;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    #infoPembayaran {
+      background: rgba(255,255,255,0.9);
+      border-radius: 10px;
+      padding: 15px;
+      color: #000;
+      line-height: 1.6;
+      margin-top: 10px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ====== FORM PEMESANAN ====== -->
+  <section id="formSection" class="form-section">
+    <h2>Pemesanan Tiket Pertandingan</h2>
+    <form id="formPemesanan">
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input type="text" id="nama" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group">
+        <label>Pilih Pertandingan</label>
+        <select id="pertandingan" required>
+          <option value="">-- Pilih Pertandingan --</option>
+          <option value="Persija vs Persib">Persija vs Persib</option>
+          <option value="Persija vs Arema">Persija vs Arema</option>
+          <option value="Persija vs Persebaya">Persija vs Persebaya</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Metode Pembayaran</label>
+        <select id="metode" required>
+          <option value="">-- Pilih Metode Pembayaran --</option>
+          <option value="va">Virtual Account</option>
+          <option value="qris">QRIS</option>
+        </select>
+      </div>
+      <button type="submit" class="btn">Bayar Sekarang</button>
+      <p id="errorMessage" style="display:none;">Mohon lengkapi semua data.</p>
+    </form>
+  </section>
+
+  <!-- ====== HALAMAN KONFIRMASI ====== -->
+  <section id="halamanKonfirmasi">
+    <h2>Konfirmasi Pembayaran</h2>
+    <div id="infoTagihan"></div>
+    <div id="opsiBayar" style="margin-top:15px;">
+      <button class="btn" id="btnSudahBayar">Sudah Bayar</button>
+      <button class="btn" id="btnBelumBayar" style="background-color:gray;">Belum Bayar</button>
+    </div>
+    <p id="statusPesan">⚠️ Harap bayar tagihan sebelum melanjutkan.</p>
+  </section>
+
+  <!-- ====== HALAMAN TIKET ====== -->
+  <section id="halamanTiket">
+    <img id="logoTiket" src="LOGO TIKET.png" alt="Logo">
+    <canvas id="barcodeCanvas"></canvas>
+    <div id="infoPembayaran"></div>
+    <button class="btn" onclick="cetakTiket()">Cetak / Unduh Tiket</button>
+  </section>
+
+  <script>
+    const form = document.getElementById('formPemesanan');
+    const formSection = document.getElementById('formSection');
+    const halamanKonfirmasi = document.getElementById('halamanKonfirmasi');
+    const halamanTiket = document.getElementById('halamanTiket');
+    const infoTagihan = document.getElementById('infoTagihan');
+    const infoPembayaran = document.getElementById('infoPembayaran');
+    const statusPesan = document.getElementById('statusPesan');
+    const errorMessage = document.getElementById('errorMessage');
+    let dataTiket = {};
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nama = document.getElementById('nama').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const pertandingan = document.getElementById('pertandingan').value;
+      const metode = document.getElementById('metode').value;
+
+      if (!nama || !email || !pertandingan || !metode) {
+        errorMessage.style.display = 'block';
+        return;
+      }
+
+      errorMessage.style.display = 'none';
+      dataTiket = { nama, email, pertandingan, metode };
+      formSection.style.display = 'none';
+      halamanKonfirmasi.style.display = 'block';
+
+      const nomorTiket = 'TIKET-' + Math.floor(Math.random() * 1000000);
+      dataTiket.nomorTiket = nomorTiket;
+
+      let info = '';
+      if (metode === 'va') {
+        const kodeVA = 'VA' + Math.floor(Math.random() * 1000000000);
+        dataTiket.kodePembayaran = kodeVA;
+        info = `<strong>Nomor Virtual Account:</strong> ${kodeVA}`;
+      } else {
+        info = '<strong>QRIS:</strong><br><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Tiket' + nomorTiket + '" alt="QRIS" />';
+      }
+
+      infoTagihan.innerHTML = `
+        <p><strong>Nama:</strong> ${nama}<br>
+        <strong>Email:</strong> ${email}<br>
+        <strong>Pertandingan:</strong> ${pertandingan}<br>
+        ${info}</p>
+      `;
+    });
+
+    document.getElementById('btnSudahBayar').addEventListener('click', () => {
+      halamanKonfirmasi.style.display = 'none';
+      halamanTiket.style.display = 'block';
+      statusPesan.style.display = 'none';
+
+      infoPembayaran.innerHTML = `
+        <strong>Nama:</strong> ${dataTiket.nama}<br>
+        <strong>Email:</strong> ${dataTiket.email}<br>
+        <strong>Pertandingan:</strong> ${dataTiket.pertandingan}<br>
+        <strong>Nomor Tiket:</strong> ${dataTiket.nomorTiket}
+      `;
+
+      JsBarcode("#barcodeCanvas", dataTiket.nomorTiket, {
+        format: "CODE128",
+        lineColor: "#d32f2f",
+        width: 2,
+        height: 60,
+        fontSize: 14,
+        displayValue: true
+      });
+    });
+
+    document.getElementById('btnBelumBayar').addEventListener('click', () => {
+      statusPesan.style.display = 'block';
+    });
+
+    function cetakTiket() {
+      window.print();
+      form.reset();
+      halamanTiket.style.display = 'none';
+      formSection.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

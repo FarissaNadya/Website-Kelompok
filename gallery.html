@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Gallery - Jakmania</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .page {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .section {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px 20px;
+        margin-bottom: 40px;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .section-title h2 {
+        font-family: 'Oswald', sans-serif;
+        font-size: 2.5em;
+        color: #FF4500;
+        letter-spacing: 2px;
+    }
+
+    .section-title span.orange-text {
+        color: #FFA500;
+        font-weight: bold;
+    }
+
+    .section-title p {
+        font-size: 1.2em;
+        color: #666;
+        font-weight: 300;
+    }
+
+    .section-title .gallery-logo {
+        display: block;
+        margin: 0 auto 15px auto;
+        height: 300px;
+        width: auto;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+    }
+
+    .section-title .gallery-logo:hover {
+        transform: scale(1.08);
+    }
+
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+        padding: 50px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        background: linear-gradient(135deg, #fff 0%, #ffe6b3 100%);
+    }
+
+    .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        height: 300px;
+        transform: translateY(50px);
+        opacity: 0;
+        transition: all 0.6s ease-out;
+    }
+
+    .gallery-item.animate {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+        transition: transform 0.5s ease, filter 0.5s ease;
+    }
+
+    .gallery-item:hover img {
+        transform: scale(1.1);
+        filter: brightness(1.1);
+    }
+
+    .gallery-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 69, 0, 0.8);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-family: 'Oswald', sans-serif;
+        font-size: 1.1em;
+        transform: translateY(100%);
+        transition: transform 0.4s ease;
+    }
+
+    .gallery-item:hover .gallery-caption {
+        transform: translateY(0);
+    }
+
+    .back-button {
+        display: block;
+        width: 200px;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #FF4500;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        font-family: 'Oswald', sans-serif;
+        font-size: 1.1em;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .back-button:hover {
+        background-color: #FFA500;
+        transform: scale(1.05);
+    }
+
+    /* Tombol video tambahan */
+    .video-button {
+        display: block;
+        width: 220px;
+        margin: 50px auto 0 auto;
+        padding: 12px 20px;
+        background-color: #1e90ff;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        font-family: 'Oswald', sans-serif;
+        font-size: 1.1em;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .video-button:hover {
+        background-color: #4682b4;
+        transform: scale(1.05);
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #0d0d0d;
+        color: white;
+        font-size: 0.9em;
+        margin-top: 40px;
+    }
+</style>
+
+</head>
+<body>
+    <div id="memberGalleryPage" class="page">
+        <a href="index.html" class="back-button">Kembali ke Dashboard</a>
+
+        <section class="section">
+            <div class="section-title">
+                <img src="gallery logo.png" alt="Logo Jakmania" class="gallery-logo">
+                <p>Perjalanan dan kebersamaan Jakmania dari masa ke masa</p>
+            </div>
+
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="jakmania awal berdiri.jpg" alt="Jakmania Awal Berdiri" />
+                    <div class="gallery-caption">Jakmania 1997 - Awal Berdiri Bersama Persija</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="aksi tifo lama.jpg" alt="Tifo Lama" />
+                    <div class="gallery-caption">Aksi Tifo Pertama di Stadion Lebak Bulus (1999)</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="jakmania 2001.jpg" alt="Senayan" />
+                    <div class="gallery-caption">Jakmania Penuhi Stadion GBK (2001)</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="jakmania 2005.jpeg" alt="Choreo 2005" />
+                    <div class="gallery-caption">Koreografi Jakmania: Semangat Tak Pernah Padam (2005)</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="fans militan.jpg" alt="Away Day 2011" />
+                    <div class="gallery-caption">Salah satu fans militan persija - GBK senayan</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="aksi jakmania.jpeg" alt="Support 2014" />
+                    <div class="gallery-caption">Aksi Bersih bersih jakmania (2014)</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="jakmania 2018.jpg" alt="Juara 2018" />
+                    <div class="gallery-caption">Persija Juara Liga 1 2018 - Jakarta Bergemuruh</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="koreo iconik jakmania.jpg" alt="Virtual Support" />
+                    <div class="gallery-caption">Koreo Iconic Jakmania</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="ultras jakmania.jpg" alt="Modern Ultras" />
+                    <div class="gallery-caption">Jakmania Era Modern: Ultras Style (2023)</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="hut persija.jpeg" alt="Parade 2024" />
+                    <div class="gallery-caption">Hut Persija Di Bundaran HI</div>
+                </div>
+            </div>
+
+            <!-- Tombol menuju halaman video -->
+            <a href="video.html" class="video-button">Lihat Documentary Series</a>
+        </section>
+    </div>
+
+    <footer>
+        &copy; 2025 Bangga Jadi Jakmania!
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.add('animate');
+                }, 250 * index);
+            });
+        });
+    </script>
+</body>
+</html>

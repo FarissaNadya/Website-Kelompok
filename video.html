@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JAKWEB - Jakmania Documentary Series</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      position: relative;
+      text-align: center;
+      padding: 25px 10px 35px;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('jakmania landscape.jpg') center/cover no-repeat;
+      filter: blur(6px) brightness(0.6);
+      z-index: 0;
+    }
+
+    .logo-container {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 5px;
+    }
+
+    .logo-container img {
+      width: 220px;
+      height: auto;
+    }
+
+    header h2 {
+      position: relative;
+      z-index: 1;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff;
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+    }
+
+    .main-video {
+      width: 100%;
+      max-width: 850px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      margin-bottom: 25px;
+    }
+
+    .main-video video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .episode-info {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .episode-info h3 {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    /* Playlist */
+    .video-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      max-width: 900px;
+      margin-bottom: 40px;
+    }
+
+    .video-item {
+      width: 280px;
+      background: #111;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .video-item:hover {
+      transform: scale(1.05);
+      background: #222;
+    }
+
+    .video-item video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .video-item p {
+      padding: 10px;
+      font-size: 0.95rem;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    footer {
+      background: #111;
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    footer .footer-logos {
+      margin-bottom: 10px;
+    }
+
+    footer .footer-logos img {
+      height: 35px;
+      margin: 0 8px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      background-color: #555;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 22px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    .back-btn:hover {
+      background-color: #777;
+    }
+
+    @media (max-width: 768px) {
+      .logo-container img {
+        width: 180px;
+      }
+      header h2 {
+        font-size: 0.95rem;
+      }
+      .video-item {
+        width: 100%;
+        max-width: 350px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="LOGO TIKET.png" alt="Logo JAKWEB">
+    </div>
+    <h2>JAKMANIA DOCUMENTARY SERIES</h2>
+  </header>
+
+  <main>
+    <div class="main-video" id="mainVideoContainer">
+      <video autoplay controls loop id="mainVideo">
+        <source src="Story The Jak stadion Lebak bulus.mp4" type="video/mp4">
+        Browser kamu tidak mendukung pemutar video.
+      </video>
+    </div>
+
+    <div class="episode-info">
+      <h3>Story The Jak stadion Lebak bulus</h3>
+    </div>
+
+    <div class="video-list">
+      <div class="video-item" onclick="changeVideo('Story The Jak stadion Lebak bulus.mp4', 'Story The Jak stadion Lebak bulus')">
+        <video muted preload="metadata">
+          <source src="Story The Jak stadion Lebak bulus.mp4" type="video/mp4">
+        </video>
+        <p>Story The Jak stadion Lebak bulus</p>
+      </div>
+
+      <div class="video-item" onclick="changeVideo('Nostalgia PERSIJA Jakarta Vs PERSIB Bandung di Stadion Lebak Bulus.mp4', 'PERSIJA Jakarta Vs PERSIB Bandung di Stadion Lebak Bulus')">
+        <video muted preload="metadata">
+          <source src="Nostalgia PERSIJA Jakarta Vs PERSIB Bandung di Stadion Lebak Bulus.mp4" type="video/mp4">
+        </video>
+        <p>PERSIJA Jakarta Vs PERSIB Bandung di Stadion Lebak Bulus</p>
+      </div>
+
+      <div class="video-item" onclick="changeVideo('KOREO JAKMANIA AFC Cup Persija Jakarta VS Johor Darul Takzim.mp4', 'The Amazing JAKMANIA!! (AFC Cup Persija Jakarta VS Johor Darul Takzim)')">
+        <video muted preload="metadata">
+          <source src="KOREO JAKMANIA AFC Cup Persija Jakarta VS Johor Darul Takzim.mp4" type="video/mp4">
+        </video>
+        <p>The Amazing JAKMANIA!! (AFC Cup Persija Jakarta VS Johor Darul Takzim)</p>
+      </div>
+
+      <div class="video-item" onclick="changeVideo('jakarta is mine - part 1.mp4', 'Jakarta Is Mine Part 1')">
+        <video muted preload="metadata">
+          <source src="jakarta is mine - part 1.mp4" type="video/mp4">
+        </video>
+        <p>Jakarta Is Mine Part 1</p>
+      </div>
+
+      <div class="video-item" onclick="changeVideo('jakarta is mine - part 2.mp4', 'Jakarta Is Mine Part 2')">
+        <video muted preload="metadata">
+          <source src="jakarta is mine - part 2.mp4" type="video/mp4">
+        </video>
+        <p>Jakarta Is Mine Part 2</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="gallery.html" class="back-btn">KEMBALI KE GALERI</a>
+    <p>© kelompok 8</p>
+  </footer>
+
+  <script>
+    function changeVideo(src, title) {
+      const mainVideo = document.getElementById('mainVideo');
+      const episodeTitle = document.querySelector('.episode-info h3');
+      const videoContainer = document.getElementById('mainVideoContainer');
+      
+      // Ganti sumber video
+      mainVideo.src = src;
+      mainVideo.muted = false; // suara aktif
+      mainVideo.play();
+
+      // Ganti judul
+      episodeTitle.textContent = title;
+
+      // Scroll ke bagian video utama
+      videoContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
